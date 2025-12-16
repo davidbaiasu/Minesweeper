@@ -120,7 +120,9 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 			newCell.appendChild(cellImage);
 			
 			newCell.id = `cell-${i}-${j}`;
+			/// event listeners
 			newCell.addEventListener('click', handleLeftClick);
+			newCell.addEventListener('contextmenu', handleRightClick);
 			
 			newRow.appendChild(newCell);
 			
@@ -135,15 +137,45 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 function handleLeftClick(event){
 	
 	const cellElement = event.currentTarget;
+	const r = parseInt(cellElement.dataset.row);
+	const c = parseInt(cellElement.dataset.col);
 	
-	revealCell(cellElement);
+	if( cellsStatus[r][c] == 'H' ){
 		
+		revealCell(cellElement);
+		cellsStatus[r][c] = 'C';
+		
+	}
+		
+}
+
+function handleRightClick(event){
+
+	const cellElement = event.currentTarget;
+	const cellImage = cellElement.querySelector('img');
+	
+	const r = parseInt(cellElement.dataset.row);
+	const c = parseInt(cellElement.dataset.col);
+	
+	if( cellsStatus[r][c] == 'H' ){
+		
+		cellImage.src = `flag.png`;
+		cellsStatus[r][c] = 'F';
+		
+	}
+	else if( cellsStatus[r][c] == 'F' ){
+		cellImage.src = `hidden.png`;
+		cellsStatus[r][c] = 'H';
+	}
+	
 }
 
 function revealCell(cellElement) {
 	
     const value = cellElement.dataset.value; 
     const cellImage = cellElement.querySelector('img');
+	
+	
     
 	if( value == 9 ){
 		cellImage.src = `bomb.png`;
