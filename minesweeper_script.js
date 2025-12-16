@@ -257,7 +257,7 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
 	const cellElement = document.getElementById(`cell-${r}-${c}`);
 	revealCell(cellElement);
 	
-	if (cellsValues[r][c] !== 0) {
+	if ( cellsValues[r][c] !== 0 ) {
         return;
     }
 	
@@ -271,6 +271,8 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
 		
         const nextR = r + dr;
         const nextC = c + dc;
+		
+		///sharp edges fixer:
 		
 		revealAdjacentEmptyCells(nextR, nextC, ROWS, COLS, cellsValues, cellsStatus);
     
