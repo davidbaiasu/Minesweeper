@@ -120,6 +120,7 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 			newCell.appendChild(cellImage);
 			
 			newCell.id = `cell-${i}-${j}`;
+			newCell.addEventListener('click', handleLeftClick);
 			
 			newRow.appendChild(newCell);
 			
@@ -128,6 +129,29 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 		newTable.appendChild(newRow);
 		
 	}
+	
+}
+
+function handleLeftClick(event){
+	
+	const cellElement = event.currentTarget;
+	
+	revealCell(cellElement);
+		
+}
+
+function revealCell(cellElement) {
+	
+    const value = cellElement.dataset.value; 
+    const cellImage = cellElement.querySelector('img');
+    
+	if( value == 9 ){
+		cellImage.src = `bomb.png`;
+	}
+	
+    else {
+        cellImage.src = `${value}.png`; 
+    }
 	
 }
 
