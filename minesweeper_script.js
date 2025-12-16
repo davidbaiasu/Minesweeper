@@ -97,6 +97,7 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 	cellsValues = initialize_cellsValues(cellsValues, ROWS, COLS, BOMB_COUNT);
 	
 	const newTable = document.getElementById('grid');
+	newTable.innerHTML = ''
 	
 	let i, j;
 	
@@ -108,9 +109,17 @@ function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
 			
 			const newCell = document.createElement('td');
 			
-			newCell.textContent = cellsValues[i][j];
-			newCell.id = `cell-${i}-${j}`;
+			newCell.dataset.value = cellsValues[i][j];
+            newCell.dataset.row = i;
+            newCell.dataset.col = j;
 			newCell.classList.add('cell');
+			
+			const cellImage = document.createElement('img');
+			cellImage.src = 'hidden.png';
+			cellImage.id = `img-${i}-${j}`;
+			newCell.appendChild(cellImage);
+			
+			newCell.id = `cell-${i}-${j}`;
 			
 			newRow.appendChild(newCell);
 			
