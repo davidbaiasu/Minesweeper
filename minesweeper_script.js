@@ -1,28 +1,50 @@
-const ROWS = 8;
-const COLS = 8;
+const ROWS = 10;
+const COLS = 10;
 const BOMB_COUNT = 10;
 
-let cellsValues = [ 
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0]
-]
+let cellsValues = initCellsValues(ROWS, COLS);
+let cellsStatus = initCellsStatus(ROWS, COLS);
 
-let cellsStatus = [ /// 'H' = Hidden, 'C' = Clicked, 'F' = Flagged
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-	['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],
-]
+function initCellsValues(ROWS, COLS){
+	
+	let cellsValues = [];
+	
+	for( let i = 0; i < ROWS; i++ ){
+		
+		let newRow = [];
+		
+		for( let j = 0; j < COLS; j++ ){
+			newRow.push(0);
+		}
+		
+		cellsValues.push(newRow);
+		
+	}
+	
+	return cellsValues;
+	
+}
+
+function initCellsStatus(ROWS, COLS){
+	
+	let cellsStatus = [];
+	
+	for( let i = 0; i < ROWS; i++ ){
+		
+		let newRow = [];
+		
+		for( let j = 0; j < COLS; j++ ){
+			newRow.push('H');
+		}
+		
+		cellsStatus.push(newRow);
+		
+	}
+	
+	return cellsStatus;
+	
+}
+
 
 function shuffleCoordinates(coordinates) {
 	
@@ -147,7 +169,6 @@ function handleLeftClick(event){
 	
 	if ( value === '0' ) {
         
-        //cellsStatus[r][c] = 'C';
         revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus);
         
     } 
@@ -219,7 +240,7 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
 	
 	const neighborOffsets = [
 				[-1, 0], 
-        [ 0, -1],          [ 0, 1], 
+        [0, -1],          [0, 1], 
 				[ 1, 0] 
     ];
 	
@@ -235,3 +256,7 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
 }
 
 initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT);
+
+/// check lose & win
+/// clean code A LOT
+/// organize files
