@@ -139,17 +139,31 @@ function handleLeftClick(event){
 	const cellElement = event.currentTarget;
 	const r = parseInt(cellElement.dataset.row);
 	const c = parseInt(cellElement.dataset.col);
+	const value = cellElement.dataset.value;
 	
-	if( cellsStatus[r][c] == 'H' ){
+	if( cellsStatus[r][c] === 'C' || cellsStatus[r][c] === 'F' ){
+		return;
+	}
+	
+	if ( value === '0' ) {
+        
+        //cellsStatus[r][c] = 'C';
+        revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus);
+        
+    } 
+	
+	else {
 		
-		revealCell(cellElement);
-		cellsStatus[r][c] = 'C';
-		
+        cellsStatus[r][c] = 'C';
+        revealCell(cellElement); 
+    
 	}
 		
 }
 
 function handleRightClick(event){
+	
+	event.preventDefault();
 
 	const cellElement = event.currentTarget;
 	const cellImage = cellElement.querySelector('img');
@@ -175,8 +189,6 @@ function revealCell(cellElement) {
     const value = cellElement.dataset.value; 
     const cellImage = cellElement.querySelector('img');
 	
-	
-    
 	if( value == 9 ){
 		cellImage.src = `bomb.png`;
 	}
@@ -184,6 +196,41 @@ function revealCell(cellElement) {
     else {
         cellImage.src = `${value}.png`; 
     }
+	
+}
+
+function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
+	
+	if ( r < 0 || r >= ROWS || c < 0 || c >= COLS ) {
+        return;
+    }
+	
+	if ( cellsStatus[r][c] === 'C' || cellsStatus[r][c] === 'F' ) {
+        return;
+    }
+	
+	cellsStatus[r][c] = 'C';
+	const cellElement = document.getElementById(`cell-${r}-${c}`);
+	revealCell(cellElement);
+	
+	if (cellsValues[r][c] !== 0) {
+        return;
+    }
+	
+	const neighborOffsets = [
+				[-1, 0], 
+        [ 0, -1],          [ 0, 1], 
+				[ 1, 0] 
+    ];
+	
+	for (const [dr, dc] of neighborOffsets) {
+		
+        const nextR = r + dr;
+        const nextC = c + dc;
+		
+		revealAdjacentEmptyCells(nextR, nextC, ROWS, COLS, cellsValues, cellsStatus);
+    
+	}
 	
 }
 
