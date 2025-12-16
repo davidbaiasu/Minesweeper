@@ -196,6 +196,10 @@ function handleLeftClick(event){
 function handleRightClick(event){
 	
 	event.preventDefault();
+	
+	if( gameOver === true ){
+		return;
+	}	
 
 	const cellElement = event.currentTarget;
 	const cellImage = cellElement.querySelector('img');
