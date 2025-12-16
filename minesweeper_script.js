@@ -2,6 +2,9 @@ const ROWS = 10;
 const COLS = 10;
 const BOMB_COUNT = 10;
 
+let revealedCount = 0;
+let gameOver = false;
+
 let cellsValues = initCellsValues(ROWS, COLS);
 let cellsStatus = initCellsStatus(ROWS, COLS);
 
@@ -44,7 +47,6 @@ function initCellsStatus(ROWS, COLS){
 	return cellsStatus;
 	
 }
-
 
 function shuffleCoordinates(coordinates) {
 	
@@ -163,6 +165,10 @@ function handleLeftClick(event){
 	const c = parseInt(cellElement.dataset.col);
 	const value = cellElement.dataset.value;
 	
+	if( gameOver === true ){
+		return;
+	}
+	
 	if( cellsStatus[r][c] === 'C' || cellsStatus[r][c] === 'F' ){
 		return;
 	}
@@ -176,9 +182,14 @@ function handleLeftClick(event){
 	else {
 		
         cellsStatus[r][c] = 'C';
+		revealedCount++;
         revealCell(cellElement); 
     
 	}
+	
+	if (value !== '0') {
+        checkWin(revealedCount);
+    }
 		
 }
 
@@ -211,11 +222,17 @@ function revealCell(cellElement) {
     const cellImage = cellElement.querySelector('img');
 	
 	if( value == 9 ){
+		
 		cellImage.src = `bomb.png`;
+		gameOver = true;
+		console.log("You lose!");
+		
 	}
 	
     else {
-        cellImage.src = `${value}.png`; 
+		
+        cellImage.src = `${value}.png`;
+		
     }
 	
 }
@@ -231,6 +248,8 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
     }
 	
 	cellsStatus[r][c] = 'C';
+	revealedCount++;
+	
 	const cellElement = document.getElementById(`cell-${r}-${c}`);
 	revealCell(cellElement);
 	
@@ -239,9 +258,9 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
     }
 	
 	const neighborOffsets = [
-				[-1, 0], 
-        [0, -1],          [0, 1], 
-				[ 1, 0] 
+		[-1, -1],[-1, 0], [-1, 1],
+        [0, -1],		 [0, 1], 
+		[1, -1], [ 1, 0], [1, 1]
     ];
 	
 	for (const [dr, dc] of neighborOffsets) {
@@ -252,6 +271,20 @@ function revealAdjacentEmptyCells(r, c, ROWS, COLS, cellsValues, cellsStatus){
 		revealAdjacentEmptyCells(nextR, nextC, ROWS, COLS, cellsValues, cellsStatus);
     
 	}
+	
+}
+
+function checkWin(revealedCount){
+	
+	if( revealedCount === ROWS * COLS - BOMB_COUNT ){
+		
+		console.log("You win!");
+		gameOver = true;
+		return true;
+		
+	}
+	
+	return false;
 	
 }
 
