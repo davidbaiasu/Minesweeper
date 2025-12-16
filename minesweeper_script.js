@@ -92,7 +92,9 @@ function initialize_cellsValues(cellsValues, ROWS, COLS, BOMB_COUNT){
 	
 }
 
-function initialize_table(ROWS, COLS, cellsValues){
+function initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT){
+	
+	cellsValues = initialize_cellsValues(cellsValues, ROWS, COLS, BOMB_COUNT);
 	
 	const newTable = document.getElementById('grid');
 	
@@ -119,6 +121,5 @@ function initialize_table(ROWS, COLS, cellsValues){
 	}
 	
 }
-cellsValues = initialize_cellsValues(cellsValues, ROWS, COLS, BOMB_COUNT);
 
-initialize_table(ROWS, COLS, cellsValues);
+initialize_table(cellsValues, ROWS, COLS, BOMB_COUNT);

@@ -5,7 +5,14 @@
 }
 
 .cell{
-
-	font-size: 40px;
+	
+	width: 40px;
+	height: 40px;
+	font-size: 30px;
+	border: 2px solid;
+	text-align: center;
+	cursor: pointer;
+	background-color: #ccc;
+	background-size: cover;
 	
 }
